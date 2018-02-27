@@ -1,0 +1,51 @@
+services:
+ - name: Get Bank Details
+   description: Get Bank List
+   fromEndPont: /wf-service/_create
+   finalResponse:       
+     body: '{"ResponseInfo":null,"Banks":[{"id":null,"code":null,"name":null}]}'
+     basePath: $.Banks[*]
+   requests:       
+    - url: /MahaULBAPI/rest/common/bankmaster/bankmasterlist
+      basePath: $.EstateRegisters
+      queryParams:
+      pathParams:
+      headerParams:
+      body: '{"status":{0}}'
+      bodyParams:
+       - source: id
+         in: query
+      
+      response:
+       basePath: $.resultData[*]
+       responseParams:
+        - source: $.resultData[*].bankId
+          destination: $.Banks[*].id
+        - source: $.resultData[*].bank
+          destination: $.Banks[*].name
+
+ - name: start work flow
+   description: start land register workflow
+   fromEndPont: /wf-service/_get
+   finalResponse:       
+     body: '{"ResponseInfo":null,"Department":[{"id":null,"code":null,"name":null}]}'
+     basePath: $.Department.*
+   requests:       
+    - url: rest/common/bankmaster/bankmasterlist
+      basePath:
+      queryParams:
+      pathParams:
+      headerParams:
+      body: '{"status":{0}}'
+      bodyParams:
+       - source: atr
+         in: query
+      
+      response:
+       basePath: $.resultData[*]
+       responseParams:
+        - source: $.resultData[*].bankId
+          destination: $.Banks[*].id
+        - source: $.resultData[*].bank
+          destination: $.Banks[*].name
+ 
