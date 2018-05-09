@@ -1,0 +1,298 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Water Charges Management Service (WCMS) Master APIs
+  description: |
+    APIs available for WCMS Masters
+      - Create, Update and Search for PipeSize
+      - Create, Update and Search for DocumentType
+      - Create, Update and Search for SourceType
+      - Search for ConnectionType
+      - Search for ApplicationType
+      
+  contact:
+    name: Ghanshyam Rawat
+    email: ghanshyam.rawat@egovernments.org
+schemes:
+  - https
+basePath: '/wcms/masters/[API endpoint]'
+x-common-path: >-
+  https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml
+x-api-id: org.egov.wcms
+paths:
+  
+definitions:
+  
+  ApplicationType:
+    type: object
+    properties:
+      code:
+        description: unique code this should be assigned by system.
+        maxLength: 100
+        minLength: 3
+        enum:
+          - ADDITION CONNECTION
+          - CHANGE OF USE
+          - CLOSING CONNECTION
+          - HOLDING CONNECTION
+          - NEW CONNECTION
+          - REGULARIZATION CONNECTION
+          - TITTLE TRANSFER
+      name:
+        type: string
+        description: human readable name should be assigned by system.
+        maxLength: 100
+        minLength: 3
+      description:
+        type: string
+        description: human readable description should be assigned by user.
+        maxLength: 100
+    required:
+      - code
+      - name
+  
+  SourceType:
+    type: object
+    properties:
+      code:
+        type: string
+        description: >-
+          unique code is internally generate by the system as sequence number
+          and readonly.
+        maxLength: 20
+        minLength: 2
+      description:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      sourceCapacity:
+        type: number
+        format: double
+        description: Capacity of source (in MCFT).
+      tenantId:
+        type: string
+        description: tenant id of the SourceType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  ConnectionType:
+    type: object
+    description: Connection type master defines types of connection(eg. Metered, Nonmetered)
+    properties:
+      code:
+        type: string
+        description: >-
+          unique code for each connection type.
+        maxLength: 20
+        minLength: 2
+      description:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the SourceType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  BillingType:
+    type: object
+    description: Billing type master defines types of type of billing for a connection(eg. Plot based, Tab based, Fixed ,Other)
+    properties:
+      code:
+        type: string
+        description: >-
+          unique code for each connection billing.
+        maxLength: 20
+        minLength: 2
+      description:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the SourceType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  MetereBasedBillingSlab:
+    type: object
+    description: Billing type master defines types of type of billing for a connection(eg. Plot based, Tab based, Fixed ,Other)
+    properties:
+      id:
+        type: string
+        description: >-
+          unique code for each connection billing.
+        maxLength: 20
+        minLength: 2
+      fromUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      toUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      perUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      monthlyAmount:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      minimunAmount:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      fromDate:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      toDate:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the SourceType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  AreaBasedBillingSlab:
+    type: object
+    description: Billing type master defines types of type of billing for a connection(eg. Plot based, Tab based, Fixed ,Other)
+    properties:
+      id:
+        type: string
+        description: >-
+          unique code for each connection billing.
+        maxLength: 20
+        minLength: 2
+      fromUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      toUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      perUnit:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      B:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      minimunAmount:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      fromDate:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      toDate:
+        type: string
+        description: description of the SourceType.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the SourceType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  
+  
+  DocumentType:
+    type: object
+    properties:
+      code:
+        type: string
+        description: >-
+          unique code is internally generate by the system as a sequence number
+          and readonly.
+        maxLength: 20
+        minLength: 1
+      applicationTypeCode:
+        type: array
+        description: >- 
+         Code from ApplicationType Master, based on application type choose document type.
+        items:
+          type: string
+      description:
+        type: string
+        description: description of the DocumentType .
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the DocumentType
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId
+  
+  PipeSize:
+    type: object
+    properties:
+      code:
+        type: string
+        description: >-
+          unique code is internally generate by the system as sequence number
+          and readonly.
+        maxLength: 20
+        minLength: 1
+      sizeInInch:
+        type: number
+        format: double
+        description: H.S.C pipe size in inches.
+      description:
+        type: string
+        description: description of the PipeSize.
+        maxLength: 250
+      active:
+        type: boolean
+        description: TRUE for active and FALSE for inactive.
+      tenantId:
+        type: string
+        description: tenant id of the PipeSize
+        minLength: 4
+        maxLength: 128
+    required:
+      - code
+      - tenantId

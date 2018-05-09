@@ -1,0 +1,928 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: eGov PTIS Masters
+  description: eGov PTIS Masters manages all the masters belongs to property tax.
+  contact:
+    name: Ramakrishna (Ramki)
+    email: ramakrishna@egovernments.org
+host: phoenix-qa.egovernments.org
+schemes:
+  - https
+basePath: /pt-property/masters/v1
+x-common-path: >-
+  https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml
+paths:
+  /departments/_search:
+    post:
+      summary: Get the list of departments
+      description: departments
+      tags:
+        - Department
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: ids
+          type: array
+          items:
+            type: integer
+            format: int64
+          in: query
+          maxItems: 50
+          description: comma seperated list of Ids
+        - name: category
+          type: string
+          in: query
+          description: category of the Department
+          maxLength: 64
+        - name: name
+          type: string
+          in: query
+          description: name of the Department
+          maxLength: 128
+        - name: code
+          type: string
+          in: query
+          description: code of the Department
+          maxLength: 64
+        - name: nameLocal
+          type: string
+          in: query
+          description: name local of the Department
+          maxLength: 256
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/offSet'
+      responses:
+        '200':
+          description: Department(s) retrieved Successfully
+          schema:
+            $ref: '#/definitions/DepartmentResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /departments/_create:
+    post:
+      summary: Create new department(s)
+      description: Create new department(s)
+      tags:
+        - Department
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: departmentRequest
+          in: body
+          description: Deartment Request
+          schema:
+            $ref: '#/definitions/DepartmentRequest'
+      responses:
+        '201':
+          description: Department(s) created Successfully
+          schema:
+            $ref: '#/definitions/DepartmentResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /departments/_update:
+    post:
+      summary: Update any of the departments
+      description: Update any of the departments
+      tags:
+        - Department
+      parameters:
+        - name: departmentRequest
+          in: body
+          description: Deartment Request
+          schema:
+            $ref: '#/definitions/DepartmentRequest'
+      responses:
+        '200':
+          description: Department updated Successfully
+          schema:
+            $ref: '#/definitions/DepartmentResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+              
+  /floortypes/_search:
+    post:
+      summary: Get the list of floortype(s)
+      description: floortypes
+      tags:
+        - FloorType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: ids
+          type: array
+          items:
+            type: integer
+          format: int64
+          in: query
+          maxItems: 50
+          description: comma seperated list of Ids
+        - name: name
+          type: string
+          in: query
+          description: name of the FloorType
+          maxLength: 128
+        - name: code
+          type: string
+          in: query
+          description: code of the FloorType
+          maxLength: 64
+        - name: nameLocal
+          type: string
+          in: query
+          description: name local of the FloorType
+          maxLength: 256
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/offSet'
+      responses:
+        '200':
+          description: FloorType(s) retrieved Successfully
+          schema:
+            $ref: '#/definitions/FloorTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /floortypes/_create:
+    post:
+      summary: Create new floortype(s)
+      description: Create new floortype(s)
+      tags:
+        - FloorType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: floorTypeRequest
+          in: body
+          description: Floor Type Request
+          schema:
+            $ref: '#/definitions/FloorTypeRequest'
+      responses:
+        '201':
+          description: FloorType(s) created Successfully
+          schema:
+            $ref: '#/definitions/FloorTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /floortypes/_update:
+    post:
+      summary: Update any of the floortypes
+      description: Update any of the floortypes
+      tags:
+        - FloorType
+      parameters:
+        - name: floorTypeRequest
+          in: body
+          description: Floor Type Request
+          schema:
+            $ref: '#/definitions/FloorTypeRequest'
+      responses:
+        '200':
+          description: FloorType updated Successfully
+          schema:
+            $ref: '#/definitions/FloorTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+              
+  /propertytypes/_search:
+    post:
+      summary: Get the list of propertytype(s)
+      description: propertytypes
+      tags:
+        - PropertyType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: ids
+          type: array
+          items:
+            type: integer
+          format: int64
+          in: query
+          maxItems: 50
+          description: comma seperated list of Ids
+        - name: name
+          type: string
+          in: query
+          description: name of the PropertyType
+          maxLength: 128
+        - name: code
+          type: string
+          in: query
+          description: code of the PropertyType
+          maxLength: 64
+        - name: nameLocal
+          type: string
+          in: query
+          description: name local of the PropertyType
+          maxLength: 256
+        - name: parent
+          type: string
+          in: query
+          description: >-
+            search should return all the property types where the given property
+            type code as parent
+          maxLength: 64
+        - name: active
+          type: boolean
+          in: query
+          description: >-
+            Whether PropertyType is Active or not. If the value is TRUE, then
+            PropertyType is active,If the value is FALSE then PropertyType is
+            inactive,Default value is TRUE
+        - name: orderNumber
+          type: integer
+          format: int32
+          in: query
+          description: order number of the PropertyType
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/offSet'
+      responses:
+        '200':
+          description: PropertyType(s) retrieved Successfully
+          schema:
+            $ref: '#/definitions/PropertyTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /propertytypes/_create:
+    post:
+      summary: Create new propertytype(s)
+      description: Create new propertytype(s)
+      tags:
+        - PropertyType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: propertyTypeRequest
+          in: body
+          description: Property Type Request
+          schema:
+            $ref: '#/definitions/PropertyTypeRequest'
+      responses:
+        '201':
+          description: PropertyType(s) created Successfully
+          schema:
+            $ref: '#/definitions/PropertyTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /propertytypes/_update:
+    post:
+      summary: Update any of the propertytypes
+      description: Update any of the propertytypes
+      tags:
+        - PropertyType
+      parameters:
+        - name: propertyTypeRequest
+          in: body
+          description: Property Type Request
+          schema:
+            $ref: '#/definitions/PropertyTypeRequest'
+      responses:
+        '200':
+          description: PropertyType updated Successfully
+          schema:
+            $ref: '#/definitions/PropertyTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+              
+  /usages/_search:
+    post:
+      summary: Get the list of usagemaster(s)
+      description: usagemasters
+      tags:
+        - UsageMaster
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: ids
+          type: array
+          items:
+            type: integer
+          format: int64
+          in: query
+          maxItems: 50
+          description: comma seperated list of Ids
+        - name: name
+          type: string
+          in: query
+          description: name of the UsageMaster
+          maxLength: 128
+        - name: code
+          type: string
+          in: query
+          description: code of the UsageMaster
+          maxLength: 64
+        - name: nameLocal
+          type: string
+          in: query
+          description: name local of the UsageMaster
+          maxLength: 256
+        - name: active
+          type: boolean
+          in: query
+          description: >-
+            Whether UsageMaster is Active or not. If the value is TRUE, then
+            UsageMaster is active,If the value is FALSE then UsageMaster is
+            inactive,Default value is TRUE
+        - name: isResidential
+          type: boolean
+          in: query
+          description: is residential of the UsageMaster
+        - name: parent
+          type: string
+          in: query
+          description: >-
+            search should return all the usage where the given usage code as
+            parent
+          maxLength: 64
+        - name: orderNumber
+          type: integer
+          format: int32
+          in: query
+          description: order number of the UsageMaster
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/offSet'
+      responses:
+        '200':
+          description: UsageMaster(s) retrieved Successfully
+          schema:
+            $ref: '#/definitions/UsageMasterResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /usages/_create:
+    post:
+      summary: Create new usagemaster(s)
+      description: Create new usagemaster(s)
+      tags:
+        - UsageMaster
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: usageMasterRequest
+          in: body
+          description: Usage Master Request
+          schema:
+            $ref: '#/definitions/UsageMasterRequest'
+      responses:
+        '201':
+          description: UsageMaster(s) created Successfully
+          schema:
+            $ref: '#/definitions/UsageMasterResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /usages/_update:
+    post:
+      summary: Update any of the usagemasters
+      description: Update any of the usagemasters
+      tags:
+        - UsageMaster
+      parameters:
+        - name: usageMasterRequest
+          in: body
+          description: Usage Master Request
+          schema:
+            $ref: '#/definitions/UsageMasterRequest'
+      responses:
+        '200':
+          description: UsageMaster updated Successfully
+          schema:
+            $ref: '#/definitions/UsageMasterResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+              
+  /documenttypes/_search:
+    post:
+      summary: Get the list of documenttype(s)
+      description: documenttypes
+      tags:
+        - DocumentType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: application
+          type: array
+          items:
+            type: string
+          format: int64
+          in: query
+          maxItems: 50
+          description: type of application
+        - name: name
+          type: integer
+          in: query
+          description: name of the document
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/offSet'
+      responses:
+        '200':
+          description: DocumentType retrieved Successfully
+          schema:
+            $ref: '#/definitions/DocumentTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /documenttypes/_create:
+    post:
+      summary: Create  new  DocumentType(s)
+      description: Create  new DocumentType(s)
+      tags:
+        - DocumentType
+      parameters:
+        - $ref: >-
+            https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
+        - name: documentTypeRequest
+          in: body
+          description: Document Type Request
+          schema:
+            $ref: '#/definitions/DocumentTypeRequest'
+      responses:
+        '201':
+          description: DocumentType(s) created Successfully
+          schema:
+            $ref: '#/definitions/DocumentTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+  /documenttypes/_update:
+    post:
+      summary: Update any of the DocumentType
+      description: Update any of the DocumentType
+      tags:
+        - DocumentType
+      parameters:
+        - name: DocumentTypeRequest
+          in: body
+          description: Document Type Request
+          schema:
+            $ref: '#/definitions/DocumentTypeRequest'
+      responses:
+        '200':
+          description: DocumentType updated Successfully
+          schema:
+            $ref: '#/definitions/DocumentTypeResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+definitions:
+  
+  Department:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Unique Identifier of the Department
+      tenantId:
+        type: string
+        description: tenant id of the Department
+        maxLength: 128
+        minLength: 4
+      category:
+        type: string
+        description: category of the Department
+        maxLength: 64
+        minLength: 4
+      name:
+        type: string
+        description: name of the Department
+        maxLength: 128
+        minLength: 4
+      code:
+        type: string
+        description: code of the Department
+        maxLength: 64
+        minLength: 2
+      nameLocal:
+        type: string
+        description: name local of the Department
+        maxLength: 256
+        minLength: 1
+      description:
+        type: string
+        description: description of the Department
+        maxLength: 512
+        minLength: 4
+      auditDetails:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/AuditDetails
+    required:
+      - id
+      - tenantId
+      - category
+      - name
+      - code
+  DepartmentRequest:
+    description: >-
+      Contract class to receive request. Array of Department items are used in
+      case of create, whereas single Department item is used for update
+    properties:
+      requestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      departments:
+        description: Used for search result and create only
+        type: array
+        items:
+          $ref: '#/definitions/Department'
+  DepartmentResponse:
+    description: >-
+      Contract class to send response. Array of Department items are used in
+      case of search results or response for create, whereas single Department
+      item is used for update
+    properties:
+      responseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      departments:
+        description: Used for search result and create only
+        type: array
+        maximum: 500
+        items:
+          $ref: '#/definitions/Department'
+  
+  FloorType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Unique Identifier of the FloorType
+      tenantId:
+        type: string
+        description: tenant id of the FloorType
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the FloorType
+        maxLength: 128
+        minLength: 4
+      code:
+        type: string
+        description: code of the FloorType
+        maxLength: 64
+        minLength: 2
+      nameLocal:
+        type: string
+        description: name local of the FloorType
+        maxLength: 256
+        minLength: 1
+      description:
+        type: string
+        description: description of the FloorType
+        maxLength: 512
+        minLength: 4
+      auditDetails:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/AuditDetails
+    required:
+      - id
+      - tenantId
+      - name
+      - code
+  FloorTypeRequest:
+    description: >-
+      Contract class to receive request. Array of FloorType items are used in
+      case of create, whereas single FloorType item is used for update
+    properties:
+      requestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      floorTypes:
+        description: Used for search result and create only
+        type: array
+        items:
+          $ref: '#/definitions/FloorType'
+  FloorTypeResponse:
+    description: >-
+      Contract class to send response. Array of FloorType items  are used in
+      case of search results or response for create, whereas single FloorType
+      item is used for update
+    properties:
+      responseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      floorTypes:
+        description: Used for search result and create only
+        type: array
+        maximum: 500
+        items:
+          $ref: '#/definitions/FloorType'
+ 
+  PropertyType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Unique Identifier of the PropertyType
+      tenantId:
+        type: string
+        description: tenant id of the PropertyType
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the PropertyType
+        maxLength: 128
+        minLength: 4
+      code:
+        type: string
+        description: code of the PropertyType
+        maxLength: 64
+        minLength: 2
+      nameLocal:
+        type: string
+        description: name local of the PropertyType
+        maxLength: 256
+        minLength: 1
+      parent:
+        type: string
+        description: >-
+          The parent property type code. Eg:- Under Buildings there can be sub
+          property types  central, state, etc.
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the PropertyType
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether PropertyType is Active or not. If the value is TRUE, then
+          PropertyType is active, if the value is FALSE then PropertyType is
+          inactive, default value is TRUE
+      orderNumber:
+        type: integer
+        format: int32
+        description: order number of the PropertyType
+    required:
+      - id
+      - tenantId
+      - name
+      - code
+  PropertyTypeRequest:
+    description: >-
+      Contract class to receive request. Array of PropertyType items are used in
+      case of create, whereas single PropertyType item is used for update
+    properties:
+      requestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      propertyTypes:
+        description: Used for search result and create only
+        type: array
+        items:
+          $ref: '#/definitions/PropertyType'
+  PropertyTypeResponse:
+    description: >-
+      Contract class to send response. Array of PropertyType items are used in
+      case of search results or response for create, whereas single PropertyType
+      item is used for update
+    properties:
+      responseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      propertyTypes:
+        description: Used for search result and create only
+        type: array
+        maximum: 500
+        items:
+          $ref: '#/definitions/PropertyType'
+ 
+  UsageMaster:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Unique Identifier of the UsageMaster
+      tenantId:
+        type: string
+        description: tenant id of the UsageMaster
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the UsageMaster
+        maxLength: 128
+        minLength: 4
+      code:
+        type: string
+        description: code of the UsageMaster
+        maxLength: 64
+        minLength: 2
+      nameLocal:
+        type: string
+        description: name local of the UsageMaster
+        maxLength: 256
+        minLength: 1
+      parent:
+        type: string
+        description: >-
+          The parent usage code. Eg:- Under Non-Residential there can be sub
+          usages shop, hotel, lodge etc. In this case Non-Residential is parent
+          for shop, hotel, lodge
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the UsageMaster
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageMaster is Active or not. If the value is TRUE, then
+          UsageMaster is active, if the value is FALSE then UsageMaster is
+          inactive, default value is TRUE
+      isResidential:
+        type: boolean
+        description: is residential of the UsageMaster
+      orderNumber:
+        type: integer
+        format: int32
+        description: order number of the UsageMaster
+      service:
+        type: string
+        description: >-
+          Service code. Usage for this code. Different services can have
+          different usage. default value is COMMON. This is valid for sub usage
+          also.
+        maxLength: 64
+        minLength: 2
+      auditDetails:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/AuditDetails
+    required:
+      - id
+      - tenantId
+      - name
+      - code
+  UsageMasterRequest:
+    description: >-
+      Contract class to receive request. Array of UsageMaster items are used in
+      case of create, whereas single UsageMaster item is used for update
+    properties:
+      requestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      usageMasters:
+        description: Used for search result and create only
+        type: array
+        items:
+          $ref: '#/definitions/UsageMaster'
+  UsageMasterResponse:
+    description: >-
+      Contract class to send response. Array of UsageMaster items are used in
+      case of search results or response for create, whereas single UsageMaster
+      item is used for update
+    properties:
+      responseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      usageMasters:
+        description: Used for search result and create only
+        type: array
+        maximum: 500
+        items:
+          $ref: '#/definitions/UsageMaster'
+  
+  DocumentTypeRequest:
+    description: >-
+      Contract class to receive request. Array of Depreciation items are used in
+      case of create, whereas single Depreciation item is used for update
+    properties:
+      requestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      DocumentType:
+        description: Used for search result and create only
+        type: array
+        items:
+          $ref: '#/definitions/DocumentType'
+  DocumentTypeResponse:
+    description: >-
+      Contract class to send response. Array of Depreciation items are used in
+      case of search results or response for create, whereas single Depreciation
+      item is used for update
+    properties:
+      responseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      DocumentType:
+        description: Used for search result and create only
+        type: array
+        maximum: 500
+        items:
+          $ref: '#/definitions/DocumentType'
+  DocumentType:
+    type: object
+    description: >-
+      This object holds type of documents to be uploaded during the transaction
+      for each application type.
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: unique id of the ApplicationType.
+      tenantId:
+        type: string
+        description: tenant id of the Property
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the document
+      code:
+        type: string
+        description: >-
+          code of the document, should be unique to the combination of name,
+          application and tenentid
+      application:
+        type: string
+        description: Application type.
+        enum:
+          - CREATE
+          - TITLE_TRANSFER
+          - BIFURCATION
+          - ALTER
+          - EDIT
+          - AMALGAMATION
+      auditDetails:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/AuditDetails
+    required:
+      - tenantId
+      - name
+      - code
+      - application
+  
+parameters:
+  pageSize:
+    name: pageSize
+    type: integer
+    format: int32
+    in: query
+    description: >-
+      Number of records in a per page in  the Search Results, Default value is
+      20
+  offSet:
+    name: offSet
+    type: integer
+    format: int32
+    in: query
+    description: 'page number of the Search Results, Default value is 0'
+

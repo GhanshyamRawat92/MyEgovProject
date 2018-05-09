@@ -1,0 +1,104 @@
+swagger: '2.0'
+info:
+  version: 2.0.0
+  title: Water Charges Calculation APIs
+  description: |
+    APIs available for WCMS
+      - Calculate water charges for connection.
+  contact:
+    name: Ghanshyam Rawat
+    email: ghanshyam.rawat@egovernments.org
+schemes:
+  - https
+basePath: /wcms/v2
+paths:
+  /_calculate:
+    post:
+      summary: Calculate water tax.
+      description: Calculate water tax based on criteria.
+      tags:
+        - Water Tax Calculation
+      parameters:
+        - name: calculationReq
+          in: body
+          description: required parameters have to be populated
+          required: true
+          schema:
+            $ref: '#/definitions/CalculationReq'
+      responses:
+        '200':
+          description: Success response calculated tax with connection number and amount.
+          schema:
+            $ref: '#/definitions/CalculationRes'
+        '400':
+          description: New water connection request failed
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+        '404':
+          description: tenantId provided was not found
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+definitions:
+  CalulationCriteria:
+    type: object
+    properties:
+      connectionNumber:
+        type: string
+      tenantId:
+        type: string
+        minLength: 2
+        maxLength: 256
+    required:
+      - tenantId
+
+#######################################
+
+  Calculation:
+    type: object
+    properties:
+      connectionNumber:
+        type: string
+      amount:
+        type: string
+        description: Tax to be calculated for which type of period
+      fromDate:
+        type: integer
+        format: int64
+      toDate:
+        type: integer
+        format: int64
+      tenantId:
+        type: string
+        minLength: 2
+        maxLength: 256
+        
+####################################
+
+
+  CalculationReq:
+    type: object
+    properties:
+      RequestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      calulationCriteria:
+        type: array
+        maximum: 100
+        items:
+          $ref: '#/definitions/CalulationCriteria'
+    required:
+      - RequestInfo
+      - calulationCriteria
+  CalculationRes:
+    type: object
+    properties:
+      ResponseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      calculation:
+        type: array
+        items:
+          $ref: '#/definitions/Calculation'
+h

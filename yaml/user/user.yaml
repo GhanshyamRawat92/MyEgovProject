@@ -127,7 +127,7 @@ definitions:
   User:
     allOf:
       - $ref: >-
-          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-1-0.yml#/definitions/UserInfo
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/Contractors/v1-1-0.yml#/definitions/UserInfo
     type: object
     properties:
       accountLocked:
