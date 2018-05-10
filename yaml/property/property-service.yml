@@ -27,9 +27,6 @@ paths:
             https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/requestInfo
         - $ref: >-
             https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/parameters/tenantId
-        - $ref: '#/parameters/pageSize'
-        - $ref: '#/parameters/pageNumber'
-        - $ref: '#/parameters/sortProperty'
         - name: active
           in: query
           description: >-
@@ -46,7 +43,7 @@ paths:
           required: false
           type: string
           format: varchar
-        - name: upicNumber
+        - name: assessmentNumber
           in: query
           required: false
           description: The unique reference number for a property.
@@ -55,114 +52,30 @@ paths:
           maxLength: 128
           exclusiveMinimum: true
           exclusiveMaximum: false
-        - name: oldUpicNo
+        - name: oldAssessmentNumber
           in: query
           required: false
-          description: The unique old upic no for a Property.
+          description: The unique old assessment no for a Property.
           type: string
           minLength: 4
           maxLength: 128
           exclusiveMinimum: true
           exclusiveMaximum: false
-        - name: oldestUpicNo
-          in: query
-          required: false
-          description: The unique old upic no for a Property.
-          type: string
-          minLength: 4
-          maxLength: 128
-          exclusiveMinimum: true
-          exclusiveMaximum: false
-        - name: mobileNumber
-          in: query
-          required: false
-          description: The mobile number of a Property owner.
-          type: string
-          pattern: '[0-9]'
-          maxLength: 10
-          exclusiveMaximum: true
-        - name: aadhaarNumber
-          in: query
-          required: false
-          description: The Aadhaar number of a Property owner.
-          type: string
-          pattern: '[0-9]'
-          maxLength: 12
-          exclusiveMaximum: true
-        - name: houseNoBldgApt
-          in: query
-          required: false
-          description: The house no for a building/land of a property.
-          type: string
-          minLength: 0
-          maxLength: 32
-          exclusiveMinimum: true
-          exclusiveMaximum: false
-        - name: revenueZone
-          in: query
-          description: Revenue Zone boundary where the property is located.
-          required: false
-          type: integer
-          format: int64
-        - name: revenueWard
-          in: query
-          description: Revenue Ward boundary where the property is located.
-          required: false
-          type: integer
-          format: int64
         - name: locality
           in: query
           description: Locality boundary where the property is located.
           required: false
           type: integer
           format: int64
-        - name: ownerName
+        - name: acknowldgementNumber
           in: query
           required: false
-          description: The name of a Property owner.
-          type: string
-          minLength: 4
-          maxLength: 100
-          exclusiveMinimum: true
-          exclusiveMaximum: false
-        - name: demandFrom
-          in: query
-          description: >-
-            Property tax from amount. Properties can be searched between the tax
-            amounts. This is the from amount.
-          required: false
-          type: number
-          format: double
-        - name: demandTo
-          in: query
-          description: >-
-            Property tax to amount. Properties can be searched between the tax
-            amounts. This is the to amount.
-          required: false
-          type: number
-          format: double
-        - name: applicationNo
-          in: query
-          required: false
-          description: The application no for a property.
+          description: The acknowldgement number no for a property.
           type: string
           minLength: 1
           maxLength: 64
           exclusiveMinimum: true
           exclusiveMaximum: false
-        - name: usageType
-          in: query
-          required: false
-          description: Usage under the property details.
-          type: string
-          minLength: 1
-          maxLength: 64
-        - name: adminBoundary
-          in: query
-          required: false
-          description: Admin boundary where the property is located.
-          type: integer
-          format: int64
       responses:
         '200':
           description: Successful response
@@ -228,10 +141,11 @@ paths:
 definitions:
   PropertyInfo:
     type: object
+    description: This is lightweight property object that can be used as reference by definitions needing property linking. Actual Property Object extends this to include more elaborate attributes of the property.
     properties:
       id:
         type: string
-        description: Unique Identifier of the Property(UUID).
+        description: Unique Identifier of the Property (UUID).
         readOnly: true
         minLength: 1
         maxLength: 64
@@ -257,21 +171,6 @@ definitions:
         maxLength: 256
         minLength: 2
         readOnly: true
-      oldAssessmentNumber:
-        type: string
-        description: >-
-          Old upic no of the Property. ULBs have the existing property in their
-          system/manual records with their identification number, they want to
-          continue the old reference number in this case the same identification
-          number will be captured here.
-        maxLength: 256
-        minLength: 1
-      assessmentDate:
-            type: string
-            format: date
-            description: >-
-              There will be work flow to create a new property in a system. The
-              assessment date is the final approval and UPIC no generation date.
       status:
         type: string
         description: status of the Property
@@ -296,6 +195,9 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/OwnerInfo'
+      address:
+            $ref: >-
+              #/definitions/Address
 
 #########################################        
           
@@ -305,6 +207,21 @@ definitions:
       - type: object
         description: A Object holds the basic data for a property
         properties:
+          oldAssessmentNumber:
+            type: string
+            description: >-
+              Old upic no of the Property. ULBs have the existing property in their
+              system/manual records with their identification number, they want to
+              continue the old reference number in this case the same identification
+              number will be captured here.
+            maxLength: 256
+            minLength: 1
+          assessmentDate:
+            type: string
+            format: date
+            description: >-
+              There will be work flow to create a new property in a system. The
+              assessment date is the final approval and UPIC no generation date.
           creationReason:
             type: string
             description: >-
@@ -323,36 +240,8 @@ definitions:
               Property is constructed but the tax will be applicable only from
               the occupation date (time in epoch). System capture that date
               here.
-          gisRefNo:
-            type: string
-            description: >-
-              Property tax system will be integrated with GIS system. Here we
-              capture the GIS ref. no.
-            maxLength: 32
-            minLength: 4
-          address:
-            $ref: >-
-              #/definitions/Address
-          channel:
-            type: string
-            description: >-
-              Property can be created from different channels Eg. System
-              (properties created by ULB officials), CFC Counter (From citizen
-              faciliation counters) etc. Here we are defining some known
-              channels, there can be more client to client.
-            maxLength: 64
-            minLength: 4
-            enum:
-              - SYSTEM
-              - CFC_COUNTER
-              - CITIZEN
-              - DATA_ENTRY
-              - MIGRATION
           propertyDetail:
             $ref: '#/definitions/PropertyDetail'
-          auditDetails:
-            $ref: >-
-              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/AuditDetails
         required:
           - address
           - boundary
@@ -379,38 +268,33 @@ definitions:
         enum:
           - MUNICIPAL_RECORDS
           - FIELD_SURVEY
-      regNo:
-        type: string
-        description: Property registered no from Registration Department.
-        maxLength: 64
-        minLength: 1
-      regDate:
-        type: string
-        format: date
-        description: roperty registered date from Registration Department.
       usage:
         type: string
         description: usage of the property
         maxLength: 64
         minLength: 1
-      department:
-        type: string
-        description: >-
-          department of the property which belongs to. This is applicable when
-          property type is State Govternment or Central Government.
-        maxLength: 64
-        minLength: 1
+        
       noOfFloors:
         type: integer
         format: int64
         description: no of floors in the property
-      propertyArea:
-        $ref: '#/definitions/Area'
+      
+      landArea:
+        type: number
+        format: float
+        description: Land area of the property in sq ft
+        
+      buildUpArea:
+        type: number
+        format: float
+        description: Total built up area in sq ft
+
       units:
-        description: List of Unit of the property.
+        description: List of Units in the property. E.g. A property might have 2 units in ground floor and 1 ion first floor. Unit can be Room, floor or any bounded area with a defined usage.
         type: array
         items:
           $ref: '#/definitions/Unit'
+      
       documents:
         description: >-
           The documents attached during assessment, modification or any
@@ -418,9 +302,26 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Document'
+      
       additionalDetails:
         type: string
         description: 'The json (array of ''#/definitions/Factor'')'
+      
+      channel:
+            type: string
+            description: >-
+              Property can be created from different channels Eg. System
+              (properties created by ULB officials), CFC Counter (From citizen
+              faciliation counters) etc. Here we are defining some known
+              channels, there can be more client to client.
+            maxLength: 64
+            minLength: 4
+            enum:
+              - SYSTEM
+              - CFC_COUNTER
+              - CITIZEN
+              - DATA_ENTRY
+              - MIGRATION
         
 #########################################        
         
@@ -514,8 +415,10 @@ definitions:
         maxLength: 64
         minLength: 1
       unitArea:
-        $ref: '#/definitions/Area'
-      unitUsage:
+        type: number
+        format: float
+        description: Area of the defined Unit
+      usage:
         type: array
         items:
          $ref: '#/definitions/UnitUsage'
@@ -540,24 +443,13 @@ definitions:
         description: end date for the unit usage.
         maxLength: 64
         minLength: 1
+      occupancyType:
+        type: string
+        description: end date for the unit usage.
+        enum:
+              - Owner
+              - Tenant
         
-#########################################
-
-  Area:
-    type: object
-    properties:
-      totalArea:
-        type: number
-        format: double
-        description:  total area of the site.
-      totalBuiltupArea:
-        type: number
-        format: double
-        description: >-
-          total builtup area of the property. If building has multiple floors,
-          this is a sum of individual floor builtup area.
-          
-          
 #########################################
 
   PropertyRequest:
@@ -592,42 +484,4 @@ definitions:
           
 #########################################        
   
-parameters:
-  pageSize:
-    name: pageSize
-    in: query
-    description: Number of records returned.
-    type: integer
-    minimum: 0
-    exclusiveMinimum: true
-    maximum: 100
-    exclusiveMaximum: false
-    multipleOf: 10
-    default: 20
-  pageNumber:
-    name: pageNumber
-    in: query
-    description: Page number
-    type: integer
-    default: 1
-  sortProperty:
-    name: sort
-    in: query
-    description: >-
-      Property results will be sorted by upicno ascending by default if this
-      parameter is not provided.
-    type: array
-    uniqueItems: true
-    minItems: 1
-    maxItems: 3
-    collectionFormat: pipes
-    items:
-      type: string
-      pattern: '[-+](upicno|doorNumber|ownerName)'
-    default:
-      - +upicno
-tags:
-  - name: Property
-    description: APIs required for property.
-  - name: Transfer
-    description: APIs required for title transfer.
+
