@@ -314,8 +314,8 @@ definitions:
             maxLength: 256
             minLength: 1
           assessmentDate:
-            type: string
-            format: date
+            type: integer
+            format: int64
             description: >-
               There will be work flow to create a new property in a system. The
               assessment date is the final approval and UPIC no generation date.
@@ -341,9 +341,7 @@ definitions:
             $ref: '#/definitions/PropertyDetail'
         required:
           - address
-          - boundary
           - propertyDetail
-          - occupancyDate
   
 #########################################              
           
@@ -367,7 +365,7 @@ definitions:
           - FIELD_SURVEY
       usage:
         type: string
-        description: usage of the property
+        description: code from usage master
         maxLength: 64
         minLength: 1
       noOfFloors:
@@ -524,12 +522,14 @@ definitions:
         maxLength: 64
         minLength: 1
       fromDate:
-        type: string
+        type: integer
+        format: int64
         description: start date for the unit usage.
         maxLength: 64
         minLength: 1
       toDate:
-        type: string
+        type: integer
+        format: int64
         description: end date for the unit usage.
         maxLength: 64
         minLength: 1
