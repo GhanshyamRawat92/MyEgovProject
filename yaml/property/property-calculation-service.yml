@@ -1,0 +1,129 @@
+swagger: '2.0'
+info:
+  version: 2.0.0
+  title: Property Tax Calculation APIs
+  description: |
+    APIs available for Property
+      - Calculate Property Tax.
+  contact:
+    name: eGovernments Foundation
+    email: ghanshyam.rawat@egovernments.org
+schemes:
+  - https
+basePath: /property/v2
+paths:
+  /_calculate:
+    post:
+      summary: Calculate Property tax.
+      description: Calculate Property Tax based on criteria.
+      tags:
+        - Water Tax Calculation
+      parameters:
+        - name: calculationReq
+          in: body
+          description: required parameters have to be populated
+          required: true
+          schema:
+            $ref: '#/definitions/CalculationReq'
+      responses:
+        '200':
+          description: Success response calculated tax with connection number and amount.
+          schema:
+            $ref: '#/definitions/CalculationRes'
+        '400':
+          description: New water connection request failed
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+        '404':
+          description: tenantId provided was not found
+          schema:
+            $ref: >-
+              https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ErrorRes
+definitions:
+
+  CalulationCriteria:
+    type: object
+    properties:
+      property:
+        $ref: 'https://raw.githubusercontent.com/GhanshyamRawat92/MyEgovProject/master/yaml/property/property-service.yml#/definitions/Property'
+      assesmentNumber:
+        type: string
+        minLength: 2
+        maxLength: 64
+      assesmentYear:
+        type: string
+        minLength: 2
+        maxLength: 64
+      oldAssesmentNumber:
+        type: string
+        minLength: 2
+        maxLength: 64
+      tenantId:
+        type: string
+        minLength: 2
+        maxLength: 256
+    required:
+      - tenantId
+
+#######################################
+
+  Calculation:
+    type: object
+    properties:
+      connectionNumber:
+        type: string
+      totalAmount:
+        type: number
+        format: double
+        description: Total payable tax amount.
+      penalty:
+        type: number
+        format: double
+        description: Penality if applicable
+      exemption:
+        type: number
+        format: double
+        description: Penality amount if applicable.
+      rebate:
+        type: number
+        format: double
+        description: Rebate amount if applicable.
+      fromDate:
+        type: integer
+        format: int64
+      toDate:
+        type: integer
+        format: int64
+      tenantId:
+        type: string
+        minLength: 2
+        maxLength: 256
+        
+####################################
+
+
+  CalculationReq:
+    type: object
+    properties:
+      RequestInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/RequestInfo
+      calulationCriteria:
+        type: array
+        maximum: 100
+        items:
+          $ref: '#/definitions/CalulationCriteria'
+    required:
+      - RequestInfo
+      - calulationCriteria
+  CalculationRes:
+    type: object
+    properties:
+      ResponseInfo:
+        $ref: >-
+          https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml#/definitions/ResponseInfo
+      calculation:
+        type: array
+        items:
+          $ref: '#/definitions/Calculation'
