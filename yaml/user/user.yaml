@@ -196,6 +196,17 @@ definitions:
             - MALE
             - FEMALE
             - OTHERS
+      action:
+        type: string
+        description: >-
+          This parameter is needed in in update request only.
+        items:
+          type: string
+          enum:
+            - FORGATE-PASSWORD
+            - CHANGE-PASSWORD
+            - UPDATE-PROFILE
+            - ACTIVATE-USER
       dob:
         type: string
         format: date

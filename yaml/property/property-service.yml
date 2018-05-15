@@ -190,7 +190,86 @@ definitions:
     required:
       - tenantId
       - code
-
+  
+  OwnerType:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: tenant id of the UsageMaster
+        maxLength: 128
+        minLength: 4
+      code:
+        type: string
+        description: code of the Owner Type
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the Owner Type
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether OwnerType is Active or not. If the value is TRUE, then
+          OwnerType is active, if the value is FALSE then OwnerType is
+          inactive, default value is TRUE
+    required:
+      - tenantId
+      - code
+      
+  BillingSlab:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: tenant id of the FloorType
+        maxLength: 128
+        minLength: 4
+      propertyType:
+        type: string
+        description: .
+        maxLength: 64
+        minLength: 2
+      usage:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      fromFloor:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      toFloor:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      area:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      fromPlotSize:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      toPlotSize:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      unitRate:
+        description: Floor Number.
+        type: number
+        format: double
+    required:
+      - tenantId
+      - code
+  
   DocumentType:
     type: object
     description: >-
@@ -233,7 +312,7 @@ definitions:
       - code
       - application
 
-
+  
 ############ Property ##############
 
   PropertyInfo:
@@ -422,17 +501,16 @@ definitions:
           isPrimaryOwner:
             type: boolean
             description: The owner is primary or not
-          isCurrentOwner:
-            type: boolean
-            description: The owner is current owner or not
           ownerShipPercentage:
             type: number
             format: double
             description: Ownership percentage.
           ownerType:
             type: string
-            description: 'Type of owner, based on this option rebate will be calculated.'
-            maxLength: 32
+            description: >- 
+             Type of owner, based on this option Exemptions will be applied.
+             This is master data defined in mdms.
+            maxLength: 256
             minLength: 4
             
 #########################################        
@@ -537,8 +615,8 @@ definitions:
         type: string
         description: end date for the unit usage.
         enum:
-              - Owner
-              - Tenant
+          - Owner
+          - Tenant
         
 #########################################
 
