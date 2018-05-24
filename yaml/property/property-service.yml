@@ -14,6 +14,7 @@ info:
 schemes:
   - https
 basePath: /properties/v2
+x-module: "PT"
 x-common-path: >-
   https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml
 paths:
@@ -141,36 +142,218 @@ paths:
 definitions:
 
 ######### Property Masters definitions##########
-  Floor:
+    
+  PropertyType:
     type: object
     properties:
       tenantId:
         type: string
-        description: tenant id of the FloorType
+        description: Unique ulb identifier.
         maxLength: 128
         minLength: 4
-      floorNum:
+      name:
         type: string
-        description: Floor Number.
+        description: name of the propertytype
+        maxLength: 128
+        minLength: 2  
+      code:
+        type: string
+        description: code of the propertytype
         maxLength: 64
         minLength: 2
       description:
         type: string
-        description: description of the FloorType
+        description: The top most division in property classification eg - vacant land
         maxLength: 512
         minLength: 4
+      active:
+        type: boolean
+        description: describes Whether propertyType is Active or not.
     required:
       - tenantId
       - code
-  
-  UsageType:
+      
+  PropertySubType:
     type: object
     properties:
       tenantId:
         type: string
-        description: tenant id of the UsageMaster
+        description: Unique ulb identifier.
         maxLength: 128
         minLength: 4
+      name:
+        type: string
+        description: name of the PropertySubType
+        maxLength: 128
+        minLength: 2  
+      code:
+        type: string
+        description: code of the propertySubType
+        maxLength: 64
+        minLength: 2
+      propertyType:
+        $ref: '#/definitions/PropertyType'
+      description:
+        type: string
+        description: second level in the classification of properties, provides info on subtypes of property type. eg - vacant land can be a playground or plot.
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: provides info on whether the propertySubType is active for usage.
+    required:
+      - tenantId
+      - code
+      
+  UsageCategoryMajor:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the UsageCategoryMajor
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the UsageCategoryMajor
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the UsageCategoryMajor
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageCategoryMajor is Active or not.
+    required:
+      - tenantId
+      - code
+      
+  UsageCategoryMinor:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the UsageCategoryMinor
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the Sub UsageCategoryMinor
+        maxLength: 64
+        minLength: 2
+      usageCategoryMajor:
+        $ref: '#/definitions/UsageCategoryMajor'
+      description:
+        type: string
+        description: description of the sub UsageCategoryMinor
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageCategoryMinor is Active or not. If the value is TRUE, then
+          UsageCategoryMinor is active, if the value is FALSE then UsageCategoryMinor is
+          inactive, default value is TRUE
+    required:
+      - tenantId
+      - code
+      - usageCategoryMajor
+      
+  UsageCategorySubMinor:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the UsageCategorySubMinor
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the UsageCategorySubMinor
+        maxLength: 64
+        minLength: 2
+      usageCategoryMinor:
+        $ref: '#/definitions/UsageCategoryMinor'
+      description:
+        type: string
+        description: description of the UsageCategorySubMinor
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageCategorySubMinor is Active or not.
+    required:
+      - tenantId
+      - code
+      - usageCategoryMinor
+      
+  UsageCategoryDetail:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the UsageCategoryDetail
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code for unique identification
+        maxLength: 64
+        minLength: 2
+      usageCategorySubMinor:
+        $ref: '#/definitions/UsageCategorySubMinor'
+      description:
+        type: string
+        description: description of the UsageCategoryDetail
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageCategoryDetail is Active or not.
+    required:
+      - tenantId
+      - code
+      - usageCategorySubMinor
+      
+      
+  ConstructionType:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the 
+        maxLength: 128
+        minLength: 2 
       code:
         type: string
         description: code of the UsageMaster
@@ -178,58 +361,230 @@ definitions:
         minLength: 2
       description:
         type: string
-        description: description of the UsageMaster
+        description: description of the constructionType
         maxLength: 512
         minLength: 4
       active:
         type: boolean
         description: >-
-          Whether UsageMaster is Active or not. If the value is TRUE, then
-          UsageMaster is active, if the value is FALSE then UsageMaster is
-          inactive, default value is TRUE
+          Whether ConstructionType is Active or not.
     required:
       - tenantId
       - code
+      
+  ConstructionSubType:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the 
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the UsageMaster
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the ConstructionSubType
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether ConstructionSubType is Active or not. 
+    required:
+      - tenantId
+      - code
+  
+  OwnerShipCategory:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the OwnerShipCategory
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code for unique identification.
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the OwnerShipCategory.
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether OwnerShipCategory is Active or not.
+    required:
+      - tenantId
+      - code
+      
+  SubOwnerShipCategory:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the SubOwnerShipCategory
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the Owner Type.
+        maxLength: 64
+        minLength: 2
+      ownerShipCategoryCode:
+        type: string
+        description: code of the Owner Type.
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the Owner Type.
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether SubOwnerShipCategory is Active or not.
+    required:
+      - tenantId
+      - code
+      - ownerShipCategoryCode
+  
   
   OwnerType:
     type: object
     properties:
       tenantId:
         type: string
-        description: tenant id of the UsageMaster
+        description: Unique ulb identifier.
         maxLength: 128
         minLength: 4
+      name:
+        type: string
+        description: name of the 
+        maxLength: 128
+        minLength: 2 
       code:
         type: string
-        description: code of the Owner Type
+        description: code of the Owner Type.
         maxLength: 64
         minLength: 2
       description:
         type: string
-        description: description of the Owner Type
+        description: description of the Owner Type.
         maxLength: 512
         minLength: 4
       active:
         type: boolean
         description: >-
-          Whether OwnerType is Active or not. If the value is TRUE, then
-          OwnerType is active, if the value is FALSE then OwnerType is
+          Whether OwnerType is Active or not.
+    required:
+      - tenantId
+      - code
+      
+  Floor:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: Floor Number.
+        maxLength: 64
+        minLength: 2
+      code:
+        type: string
+        description: Code of Floor Number.
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: description of the Floor number.
+        maxLength: 512
+        minLength: 4
+    required:
+      - tenantId
+      - code
+      
+  OccupancyType:
+    type: object
+    properties:
+      tenantId:
+        type: string
+        description: Unique ulb identifier.
+        maxLength: 128
+        minLength: 4
+      name:
+        type: string
+        description: name of the occupancy
+        maxLength: 128
+        minLength: 2 
+      code:
+        type: string
+        description: code of the OccupancyType
+        maxLength: 64
+        minLength: 2
+      description:
+        type: string
+        description: describes the Occupancy type
+        maxLength: 512
+        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether OccupancyType is Active or not. If the value is TRUE, then
+          OccupancyType is active, if the value is FALSE then OccupancyType is
           inactive, default value is TRUE
     required:
       - tenantId
       - code
       
+  
   BillingSlab:
     type: object
     properties:
       tenantId:
         type: string
-        description: tenant id of the FloorType
+        description: Unique ulb identifier
         maxLength: 128
         minLength: 4
+      name:
+        type: string
+        description: name of the slab
+        maxLength: 128
+        minLength: 2
+      code:
+        type: string
+        description: unique identifier of the billing slab object from business perspective 
+        maxLength: 64
+        minLength: 2 
       propertyType:
         type: string
-        description: .
+        description: Based on property type charges will change.
         maxLength: 64
         minLength: 2
       usage:
@@ -347,6 +702,16 @@ definitions:
         maxLength: 256
         minLength: 2
         readOnly: true
+      
+      oldAssessmentNumber:
+            type: string
+            description: >-
+              Old upic no of the Property. ULBs have the existing property in their
+              system/manual records with their identification number, they want to
+              continue the old reference number in this case the same identification
+              number will be captured here.
+            maxLength: 256
+            minLength: 1
       status:
         type: string
         description: status of the Property
@@ -366,6 +731,17 @@ definitions:
           Central Government etc.
         maxLength: 64
         minLength: 1
+      propertySubType:
+        type: string
+        description: >-
+          Sub Type of a property defined in mdms 'PropertySubType' Masetr.
+        maxLength: 64
+        minLength: 1
+      usageCategoryMajor:
+        type: string
+        description: This is about the usage of the property like Residential, Non-residential, Mixed(Property witch is gettiong used for Residential, Non-residential purpose)
+        maxLength: 64
+        minLength: 1
       owners:
         description: 'Property owners, these will be citizen users in system.'
         type: array
@@ -374,6 +750,10 @@ definitions:
       address:
             $ref: >-
               #/definitions/Address
+              
+    required:
+      - address
+      - owners
 
 #########################################        
           
@@ -383,15 +763,6 @@ definitions:
       - type: object
         description: A Object holds the basic data for a property
         properties:
-          oldAssessmentNumber:
-            type: string
-            description: >-
-              Old upic no of the Property. ULBs have the existing property in their
-              system/manual records with their identification number, they want to
-              continue the old reference number in this case the same identification
-              number will be captured here.
-            maxLength: 256
-            minLength: 1
           assessmentDate:
             type: integer
             format: int64
@@ -419,7 +790,6 @@ definitions:
           propertyDetail:
             $ref: '#/definitions/PropertyDetail'
         required:
-          - address
           - propertyDetail
   
 #########################################              
@@ -442,11 +812,7 @@ definitions:
         enum:
           - MUNICIPAL_RECORDS
           - FIELD_SURVEY
-      usage:
-        type: string
-        description: code from usage master
-        maxLength: 64
-        minLength: 1
+          
       noOfFloors:
         type: integer
         format: int64
@@ -577,38 +943,31 @@ definitions:
       unitType:
         type: string
         description: >-
-          Unit type .
+          Unit type.
         maxLength: 64
         minLength: 1
       unitArea:
         type: number
         format: float
-        description: Area of the defined Unit
-      usage:
-        type: array
-        items:
-         $ref: '#/definitions/UnitUsage'
-#########################################
-
-  UnitUsage:
-    type: object
-    description: Details of unit usage for a priod. 
-    properties:
-      usage:
+        description: Area of the defined Unit.
+      usageCategoryMajor:
         type: string
-        description: usage of the property
+        description: This is about the usage of the property like Residential, Non-residential, Mixed(Property witch is gettiong used for Residential, Non-residential purpose)
         maxLength: 64
         minLength: 1
-      fromDate:
-        type: integer
-        format: int64
-        description: start date for the unit usage.
+      usageCategoryMinor:
+        type: string
+        description: Sub category of 'UsageCategoryMajor' defined in 'UsageCategoryMinor' master of mdms.
         maxLength: 64
         minLength: 1
-      toDate:
-        type: integer
-        format: int64
-        description: end date for the unit usage.
+      usageCategorySubMinor:
+        type: string
+        description: Sub category of 'usageCategoryMinor' defined in 'UsageCategorySubMinor' master of mdms.
+        maxLength: 64
+        minLength: 1
+      usageCategoryDetail:
+        type: string
+        description: Sub category of 'usageCategorySubMinor' defined in 'usageCategoryDetail' master of mdms.
         maxLength: 64
         minLength: 1
       occupancyType:
@@ -617,7 +976,27 @@ definitions:
         enum:
           - Owner
           - Tenant
-        
+        maxLength: 64
+        minLength: 1
+      occupancyDate:
+        type: number
+        format: int64
+        description: Date on which unit is occupied.
+      constructionType:
+        type: string
+        description: Construction type is defined in MDMS ConstructionTypeMaster.
+        maxLength: 64
+        minLength: 1
+      constructionSubType:
+        type: string
+        description: Construction Sub type is defined in MDMS 'ConstructionSubType' master, this is sub category of constructionType.
+        maxLength: 64
+        minLength: 1
+      arv:
+        type: number
+        format: double
+        description: Annual rental value(arv), if occupancy type is Tenant.
+      
 #########################################
 
   PropertyRequest:
@@ -651,5 +1030,3 @@ definitions:
           $ref: '#/definitions/Property'
           
 #########################################        
-  
-
