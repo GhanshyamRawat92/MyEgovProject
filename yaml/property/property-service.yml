@@ -14,7 +14,7 @@ info:
 schemes:
   - https
 basePath: /properties/v2
-x-module: "PT"
+x-module: "PropertyTax"
 x-common-path: >-
   https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml
 paths:
@@ -146,11 +146,6 @@ definitions:
   PropertyType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the propertytype
@@ -161,26 +156,15 @@ definitions:
         description: code of the propertytype
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: The top most division in property classification eg - vacant land
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: describes Whether propertyType is Active or not.
     required:
-      - tenantId
       - code
       
   PropertySubType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the PropertySubType
@@ -193,26 +177,15 @@ definitions:
         minLength: 2
       propertyType:
         $ref: '#/definitions/PropertyType'
-      description:
-        type: string
-        description: second level in the classification of properties, provides info on subtypes of property type. eg - vacant land can be a playground or plot.
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: provides info on whether the propertySubType is active for usage.
     required:
-      - tenantId
       - code
       
   UsageCategoryMajor:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the UsageCategoryMajor
@@ -223,27 +196,16 @@ definitions:
         description: code of the UsageCategoryMajor
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the UsageCategoryMajor
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
           Whether UsageCategoryMajor is Active or not.
     required:
-      - tenantId
       - code
       
   UsageCategoryMinor:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the UsageCategoryMinor
@@ -256,11 +218,6 @@ definitions:
         minLength: 2
       usageCategoryMajor:
         $ref: '#/definitions/UsageCategoryMajor'
-      description:
-        type: string
-        description: description of the sub UsageCategoryMinor
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
@@ -268,18 +225,12 @@ definitions:
           UsageCategoryMinor is active, if the value is FALSE then UsageCategoryMinor is
           inactive, default value is TRUE
     required:
-      - tenantId
       - code
       - usageCategoryMajor
       
   UsageCategorySubMinor:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the UsageCategorySubMinor
@@ -292,28 +243,19 @@ definitions:
         minLength: 2
       usageCategoryMinor:
         $ref: '#/definitions/UsageCategoryMinor'
-      description:
-        type: string
-        description: description of the UsageCategorySubMinor
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
-          Whether UsageCategorySubMinor is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       - usageCategoryMinor
       
   UsageCategoryDetail:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the UsageCategoryDetail
@@ -326,17 +268,13 @@ definitions:
         minLength: 2
       usageCategorySubMinor:
         $ref: '#/definitions/UsageCategorySubMinor'
-      description:
-        type: string
-        description: description of the UsageCategoryDetail
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
-          Whether UsageCategoryDetail is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       - usageCategorySubMinor
       
@@ -344,42 +282,28 @@ definitions:
   ConstructionType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
-        description: name of the 
+        description: name of the construction type.
         maxLength: 128
         minLength: 2 
       code:
         type: string
-        description: code of the UsageMaster
+        description: unique code of the construction type.
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the constructionType
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
-          Whether ConstructionType is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       
   ConstructionSubType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the 
@@ -390,27 +314,20 @@ definitions:
         description: code of the UsageMaster
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the ConstructionSubType
-        maxLength: 512
-        minLength: 4
+      constructionTypeCode:
+        $ref: '#/definitions/ConstructionType'
       active:
         type: boolean
         description: >-
-          Whether ConstructionSubType is Active or not. 
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
   
   OwnerShipCategory:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the OwnerShipCategory
@@ -418,30 +335,21 @@ definitions:
         minLength: 2 
       code:
         type: string
-        description: code for unique identification.
+        description: unique code for Ownership category.
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the OwnerShipCategory.
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
-          Whether OwnerShipCategory is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       
   SubOwnerShipCategory:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the SubOwnerShipCategory
@@ -453,21 +361,14 @@ definitions:
         maxLength: 64
         minLength: 2
       ownerShipCategoryCode:
-        type: string
-        description: code of the Owner Type.
-        maxLength: 64
-        minLength: 2
-      description:
-        type: string
-        description: description of the Owner Type.
-        maxLength: 512
-        minLength: 4
+        $ref: '#/definitions/OwnerShipCategory'
       active:
         type: boolean
         description: >-
-          Whether SubOwnerShipCategory is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       - ownerShipCategoryCode
   
@@ -475,11 +376,6 @@ definitions:
   OwnerType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the 
@@ -490,27 +386,18 @@ definitions:
         description: code of the Owner Type.
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the Owner Type.
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
-          Whether OwnerType is Active or not.
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       
   Floor:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: Floor Number.
@@ -521,23 +408,18 @@ definitions:
         description: Code of Floor Number.
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: description of the Floor number.
-        maxLength: 512
-        minLength: 4
+      active:
+        type: boolean
+        description: >-
+          Whether UsageCategorySubMinor is Active or not. If the value is TRUE, then
+          UsageCategorySubMinor is active, if the value is FALSE then UsageCategorySubMinor is
+          inactive, default value is TRUE
     required:
-      - tenantId
       - code
       
   OccupancyType:
     type: object
     properties:
-      tenantId:
-        type: string
-        description: Unique ulb identifier.
-        maxLength: 128
-        minLength: 4
       name:
         type: string
         description: name of the occupancy
@@ -548,11 +430,6 @@ definitions:
         description: code of the OccupancyType
         maxLength: 64
         minLength: 2
-      description:
-        type: string
-        description: describes the Occupancy type
-        maxLength: 512
-        minLength: 4
       active:
         type: boolean
         description: >-
@@ -560,7 +437,6 @@ definitions:
           OccupancyType is active, if the value is FALSE then OccupancyType is
           inactive, default value is TRUE
     required:
-      - tenantId
       - code
       
   
