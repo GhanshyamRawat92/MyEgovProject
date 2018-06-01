@@ -14,7 +14,7 @@ info:
 schemes:
   - https
 basePath: /properties/v2
-x-module: "PropertyTax"
+x-module: "PT"
 x-common-path: >-
   https://raw.githubusercontent.com/egovernments/egov-services/master/docs/common/contracts/v1-0-0.yml
 paths:
@@ -550,9 +550,9 @@ definitions:
     type: object
     description: This is lightweight property object that can be used as reference by definitions needing property linking. Actual Property Object extends this to include more elaborate attributes of the property.
     properties:
-      id:
+      propertyId:
         type: string
-        description: Unique Identifier of the Property (UUID).
+        description: Unique Identifier of the Property.
         readOnly: true
         minLength: 1
         maxLength: 64
@@ -569,17 +569,7 @@ definitions:
         maxLength: 64
         minLength: 1
         readOnly: true
-      assessmentNumber:
-        type: string
-        description: >-
-          UPIC (Unique Property Identification Number) of the Property. This is a
-          unique in system. This is mandatory but always be generated on the
-          final approval.
-        maxLength: 256
-        minLength: 2
-        readOnly: true
-      
-      oldAssessmentNumber:
+      oldPropertyId:
             type: string
             description: >-
               Old upic no of the Property. ULBs have the existing property in their
@@ -596,10 +586,70 @@ definitions:
         enum:
           - ACTIVE
           - INACTIVE
+      address:
+            $ref: >-
+              #/definitions/Address
+              
+    required:
+      - address
+
+#########################################        
+          
+  Property:
+    allOf:
+      - $ref: '#/definitions/PropertyInfo'
+      - type: object
+        description: A Object holds the basic data for a property
+        properties:
+          
+          creationReason:
+            type: string
+            description: >-
+              New property comes into system either property is newly
+              constructed or existing property got sub divided. Here the reason
+              for creation will be captured.
+            maxLength: 256
+            minLength: 1
+            enum:
+              - NEWPROPERTY
+              - SUBDIVISION
+          occupancyDate:
+            type: integer
+            format: int64
+            description: >-
+              Property is constructed but the tax will be applicable only from
+              the occupation date (time in epoch). System capture that date
+              here.
+          propertyDetail:
+            type: array
+            items:
+              $ref: '#/definitions/PropertyDetail'
+        required:
+          - propertyDetail
+  
+#########################################              
+          
+  PropertyDetail:
+    description: Financial year wise property details will be capture here. For each financial year property details may change.
+    type: object
+    properties:
       financialYear:
         type: string
         description: >-
               Latest tax paid year.
+      assessmentNumber:
+        type: string
+        description: >-
+          unique assesment number for each financial year.
+        maxLength: 256
+        minLength: 2
+        readOnly: true
+      assessmentDate:
+            type: integer
+            format: int64
+            description: >-
+              There will be work flow to create a new property in a system. The
+              assessment date is the final approval and UPIC no generation date.
       propertyType:
         type: string
         description: >-
@@ -623,60 +673,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/OwnerInfo'
-      address:
-            $ref: >-
-              #/definitions/Address
-              
-    required:
-      - address
-      - owners
-
-#########################################        
-          
-  Property:
-    allOf:
-      - $ref: '#/definitions/PropertyInfo'
-      - type: object
-        description: A Object holds the basic data for a property
-        properties:
-          assessmentDate:
-            type: integer
-            format: int64
-            description: >-
-              There will be work flow to create a new property in a system. The
-              assessment date is the final approval and UPIC no generation date.
-          creationReason:
-            type: string
-            description: >-
-              New property comes into system either property is newly
-              constructed or existing property got sub divided. Here the reason
-              for creation will be captured.
-            maxLength: 256
-            minLength: 1
-            enum:
-              - NEWPROPERTY
-              - SUBDIVISION
-          occupancyDate:
-            type: integer
-            format: int64
-            description: >-
-              Property is constructed but the tax will be applicable only from
-              the occupation date (time in epoch). System capture that date
-              here.
-          propertyDetail:
-            $ref: '#/definitions/PropertyDetail'
-        required:
-          - propertyDetail
-  
-#########################################              
-          
-  PropertyDetail:
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int64
-        description: Unique Identifier of the PropertyDetail
       source:
         type: string
         description: >-
@@ -688,7 +684,6 @@ definitions:
         enum:
           - MUNICIPAL_RECORDS
           - FIELD_SURVEY
-          
       noOfFloors:
         type: integer
         format: int64
